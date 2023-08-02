@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const path = require("path");
 require("dotenv").config();
 require("ejs");
-//const { sequelize } = require("./database/db");
+const { sequelize } = require("./src/database/db");
 
 const app = express();
 
@@ -22,4 +22,16 @@ app.set("view engine", "ejs");
 // TODO: Si la petición no coincide con ninguna de las rutas declaradas, mostrar error 404
 
 // Starting the server
-app.listen(3100, () => console.log('Server on port xxxx'));
+app.listen(process.env.PORT, function (req, res) {
+    console.log("la app esta escuchando en http://localhost: " + process.env.PORT);
+  });
+  
+  //conexion a la base de datos
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log("nos hemos conectado a la base de datos");
+    })
+    .catch((error) => {
+      console.log("se ha producido un error", error);
+    });
